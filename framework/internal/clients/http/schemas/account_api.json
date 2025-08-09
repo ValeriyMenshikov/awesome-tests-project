@@ -1,0 +1,1198 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+        "title": "Account API",
+        "version": "0.1.0"
+    },
+    "servers": [
+        {
+            "url": "/account"
+        }
+    ],
+    "paths": {
+        "/account/info": {
+            "get": {
+                "tags": [
+                    "Account"
+                ],
+                "summary": "Получить информацию о пользователе",
+                "description": "Метод для получения информации о пользователе, метод кэширует данные на 20 секунд",
+                "operationId": "get_info_account_info_get",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "description": "Авторизационный токен",
+                            "title": "Token"
+                        },
+                        "description": "Авторизационный токен"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserDetailsEnvelope"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "Account"
+                ],
+                "summary": "Изменить информацию о пользователе",
+                "description": "Изменить информацию о пользователе",
+                "operationId": "update_info_account_info_patch",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "description": "Авторизационный токен",
+                            "title": "Token"
+                        },
+                        "description": "Авторизационный токен"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserSchema"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserDetailsEnvelope"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/account/reset-password": {
+            "post": {
+                "tags": [
+                    "Account"
+                ],
+                "summary": "Сбросить пароль",
+                "description": "Метод для сброса пароля, отправляет письмо с токеном для сброса пароля на почтовый сервер",
+                "operationId": "reset_password_account_reset_password_post",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ResetPassword"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserEnvelope"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/account/change-password": {
+            "put": {
+                "tags": [
+                    "Account"
+                ],
+                "summary": "Изменить пароль",
+                "description": "Метод позволяет изменить пароль пользователя, необходимо указать старый пароль и новый пароль, \n    а так же токен полученный в письме полученном после сброса пароля.",
+                "operationId": "change_password_account_change_password_put",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ChangePassword"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserEnvelope"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/account/change-email": {
+            "put": {
+                "tags": [
+                    "Account"
+                ],
+                "summary": "Изменить email",
+                "description": "Метод позволяет изменить почтовый адрес пользователя",
+                "operationId": "change_email_account_change_email_put",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ChangeEmail"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserEnvelope"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/account": {
+            "delete": {
+                "tags": [
+                    "Account"
+                ],
+                "summary": "Удалить учетную запись",
+                "description": "Метод запускает процесс удаления учетной записи пользователя, \n    после его выполнения на почту придет токен для подтверждения удаления учетной записи, \n    токен действует в течение 5 минут",
+                "operationId": "delete_account_account_delete",
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "description": "email учетной записи",
+                            "title": "Email"
+                        },
+                        "description": "email учетной записи"
+                    },
+                    {
+                        "name": "token",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "description": "Авторизационный токен",
+                            "title": "Token"
+                        },
+                        "description": "Авторизационный токен"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/delete_account_account_delete_response_200"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/account/confirmation-delete": {
+            "delete": {
+                "tags": [
+                    "Account"
+                ],
+                "summary": "Подтвердить удаление учетной записи",
+                "description": "Позволяет подтвердить и окончательно удалить учетную запись без возможности восстановления.",
+                "operationId": "confirmation_delete_account_account_confirmation_delete_delete",
+                "parameters": [
+                    {
+                        "name": "delete_token",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "description": "Токен для подтверждения удаления учетной записи",
+                            "title": "Delete Token"
+                        },
+                        "description": "Токен для подтверждения удаления учетной записи"
+                    },
+                    {
+                        "name": "token",
+                        "in": "header",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "description": "Авторизационный токен",
+                            "title": "Token"
+                        },
+                        "description": "Авторизационный токен"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/confirmation_delete_account_account_confirmation_delete_delete_response_200"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "BbParseMode": {
+                "type": "string",
+                "enum": [
+                    "Common",
+                    "Info",
+                    "Post",
+                    "Chat"
+                ],
+                "title": "BbParseMode"
+            },
+            "ChangeEmail": {
+                "properties": {
+                    "login": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Login",
+                        "description": "User login"
+                    },
+                    "password": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Password",
+                        "description": "User password"
+                    },
+                    "email": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Email",
+                        "description": "New user email"
+                    }
+                },
+                "type": "object",
+                "title": "ChangeEmail"
+            },
+            "ChangePassword": {
+                "properties": {
+                    "login": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Login",
+                        "description": "User login"
+                    },
+                    "token": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Token",
+                        "description": "Password reset token"
+                    },
+                    "oldPassword": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Oldpassword",
+                        "description": "Old password"
+                    },
+                    "newPassword": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Newpassword",
+                        "description": "New password"
+                    }
+                },
+                "type": "object",
+                "title": "ChangePassword"
+            },
+            "ColorSchema": {
+                "type": "string",
+                "enum": [
+                    "Modern",
+                    "Pale",
+                    "Classic",
+                    "ClassicPale",
+                    "Night"
+                ],
+                "title": "ColorSchema"
+            },
+            "HTTPValidationError": {
+                "properties": {
+                    "detail": {
+                        "items": {
+                            "$ref": "#/components/schemas/ValidationError"
+                        },
+                        "type": "array",
+                        "title": "Detail"
+                    }
+                },
+                "type": "object",
+                "title": "HTTPValidationError"
+            },
+            "InfoBbText": {
+                "properties": {
+                    "value": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Value",
+                        "description": "Text"
+                    },
+                    "parseMode": {
+                        "anyOf": [
+                            {
+                                "$ref": "#/components/schemas/BbParseMode"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ]
+                    }
+                },
+                "type": "object",
+                "title": "InfoBbText"
+            },
+            "PagingSettings": {
+                "properties": {
+                    "postsPerPage": {
+                        "anyOf": [
+                            {
+                                "type": "integer"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Postsperpage",
+                        "description": "Number of posts on a game room page"
+                    },
+                    "commentsPerPage": {
+                        "anyOf": [
+                            {
+                                "type": "integer"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Commentsperpage",
+                        "description": "Number of commentaries on a game or a topic page"
+                    },
+                    "topicsPerPage": {
+                        "anyOf": [
+                            {
+                                "type": "integer"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Topicsperpage",
+                        "description": "Number of detached topics on a forum page"
+                    },
+                    "messagesPerPage": {
+                        "anyOf": [
+                            {
+                                "type": "integer"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Messagesperpage",
+                        "description": "Number of private messages and conversations on dialogue page"
+                    },
+                    "entitiesPerPage": {
+                        "anyOf": [
+                            {
+                                "type": "integer"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Entitiesperpage",
+                        "description": "Number of other entities on page"
+                    }
+                },
+                "type": "object",
+                "title": "PagingSettings"
+            },
+            "Rating": {
+                "properties": {
+                    "enabled": {
+                        "anyOf": [
+                            {
+                                "type": "boolean"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Enabled",
+                        "description": "Rating participation flag"
+                    },
+                    "quality": {
+                        "anyOf": [
+                            {
+                                "type": "integer"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Quality",
+                        "description": "Quality rating"
+                    },
+                    "quantity": {
+                        "anyOf": [
+                            {
+                                "type": "integer"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Quantity",
+                        "description": "Quantity rating"
+                    }
+                },
+                "type": "object",
+                "title": "Rating"
+            },
+            "ResetPassword": {
+                "properties": {
+                    "login": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Login",
+                        "description": "Login"
+                    },
+                    "email": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Email",
+                        "description": "Email"
+                    }
+                },
+                "type": "object",
+                "title": "ResetPassword"
+            },
+            "User": {
+                "properties": {
+                    "login": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Login",
+                        "description": "Login"
+                    },
+                    "roles": {
+                        "anyOf": [
+                            {
+                                "items": {
+                                    "$ref": "#/components/schemas/UserRole"
+                                },
+                                "type": "array"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Roles",
+                        "description": "Roles"
+                    },
+                    "mediumPictureUrl": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Mediumpictureurl",
+                        "description": "Profile picture URL M-size"
+                    },
+                    "smallPictureUrl": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Smallpictureurl",
+                        "description": "Profile picture URL S-size"
+                    },
+                    "status": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Status",
+                        "description": "User defined status"
+                    },
+                    "rating": {
+                        "anyOf": [
+                            {
+                                "$ref": "#/components/schemas/Rating"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ]
+                    },
+                    "online": {
+                        "anyOf": [
+                            {
+                                "type": "string",
+                                "format": "date-time"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Online",
+                        "description": "Last seen online moment"
+                    },
+                    "name": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Name",
+                        "description": "User real name"
+                    },
+                    "location": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Location",
+                        "description": "User real location"
+                    },
+                    "registration": {
+                        "anyOf": [
+                            {
+                                "type": "string",
+                                "format": "date-time"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Registration",
+                        "description": "User registration moment"
+                    }
+                },
+                "type": "object",
+                "title": "User"
+            },
+            "UserDetails": {
+                "properties": {
+                    "login": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Login",
+                        "description": "Login"
+                    },
+                    "roles": {
+                        "anyOf": [
+                            {
+                                "items": {
+                                    "$ref": "#/components/schemas/UserRole"
+                                },
+                                "type": "array"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Roles",
+                        "description": "Roles"
+                    },
+                    "mediumPictureUrl": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Mediumpictureurl",
+                        "description": "Profile picture URL M-size"
+                    },
+                    "smallPictureUrl": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Smallpictureurl",
+                        "description": "Profile picture URL S-size"
+                    },
+                    "status": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Status",
+                        "description": "User defined status"
+                    },
+                    "rating": {
+                        "anyOf": [
+                            {
+                                "$ref": "#/components/schemas/Rating"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ]
+                    },
+                    "online": {
+                        "anyOf": [
+                            {
+                                "type": "string",
+                                "format": "date-time"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Online",
+                        "description": "Last seen online moment"
+                    },
+                    "name": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Name",
+                        "description": "User real name"
+                    },
+                    "location": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Location",
+                        "description": "User real location"
+                    },
+                    "registration": {
+                        "anyOf": [
+                            {
+                                "type": "string",
+                                "format": "date-time"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Registration",
+                        "description": "User registration moment"
+                    },
+                    "icq": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Icq",
+                        "description": "User ICQ number"
+                    },
+                    "skype": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Skype",
+                        "description": "User Skype login"
+                    },
+                    "originalPictureUrl": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Originalpictureurl",
+                        "description": "URL of profile picture original"
+                    },
+                    "info": {
+                        "anyOf": [
+                            {
+                                "$ref": "#/components/schemas/InfoBbText"
+                            },
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Info"
+                    },
+                    "settings": {
+                        "anyOf": [
+                            {
+                                "$ref": "#/components/schemas/UserSettings"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ]
+                    }
+                },
+                "type": "object",
+                "title": "UserDetails"
+            },
+            "UserDetailsEnvelope": {
+                "properties": {
+                    "resource": {
+                        "anyOf": [
+                            {
+                                "$ref": "#/components/schemas/UserDetails"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ]
+                    },
+                    "metadata": {
+                        "anyOf": [
+                            {},
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Metadata",
+                        "description": "Additional metadata"
+                    }
+                },
+                "type": "object",
+                "title": "UserDetailsEnvelope"
+            },
+            "UserEnvelope": {
+                "properties": {
+                    "resource": {
+                        "$ref": "#/components/schemas/User"
+                    },
+                    "metadata": {
+                        "type": "object",
+                        "title": "Metadata",
+                        "description": "Additional metadata"
+                    }
+                },
+                "type": "object",
+                "title": "UserEnvelope"
+            },
+            "UserRole": {
+                "type": "string",
+                "enum": [
+                    "Guest",
+                    "Player",
+                    "Administrator",
+                    "NannyModerator",
+                    "RegularModerator",
+                    "SeniorModerator"
+                ],
+                "title": "UserRole"
+            },
+            "UserSchema": {
+                "properties": {
+                    "name": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Name",
+                        "description": "User real name"
+                    },
+                    "location": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Location",
+                        "description": "User real location"
+                    },
+                    "icq": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Icq",
+                        "description": "User ICQ"
+                    },
+                    "skype": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Skype",
+                        "description": "User Skype"
+                    },
+                    "info": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Info",
+                        "description": "User info"
+                    },
+                    "profile_picture_url": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Profile Picture Url",
+                        "description": "Profile picture URL"
+                    },
+                    "medium_profile_picture_url": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Medium Profile Picture Url",
+                        "description": "Medium profile picture URL"
+                    },
+                    "small_profile_picture_url": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Small Profile Picture Url",
+                        "description": "Small profile picture URL"
+                    }
+                },
+                "type": "object",
+                "title": "UserSchema"
+            },
+            "UserSettings": {
+                "properties": {
+                    "colorSchema": {
+                        "anyOf": [
+                            {
+                                "$ref": "#/components/schemas/ColorSchema"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ]
+                    },
+                    "nannyGreetingsMessage": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Nannygreetingsmessage",
+                        "description": "Message that user's newbies will receive once they are connected"
+                    },
+                    "paging": {
+                        "anyOf": [
+                            {
+                                "$ref": "#/components/schemas/PagingSettings"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ]
+                    }
+                },
+                "type": "object",
+                "title": "UserSettings"
+            },
+            "ValidationError": {
+                "properties": {
+                    "loc": {
+                        "items": {
+                            "$ref": "#/components/schemas/ValidationError_loc_item"
+                        },
+                        "type": "array",
+                        "title": "Location"
+                    },
+                    "msg": {
+                        "type": "string",
+                        "title": "Message"
+                    },
+                    "type": {
+                        "type": "string",
+                        "title": "Error Type"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "loc",
+                    "msg",
+                    "type"
+                ],
+                "title": "ValidationError"
+            },
+            "delete_account_account_delete_response_200": {},
+            "confirmation_delete_account_account_confirmation_delete_delete_response_200": {},
+            "ValidationError_loc_item": {
+                "anyOf": [
+                    {
+                        "type": "string"
+                    },
+                    {
+                        "type": "integer"
+                    }
+                ]
+            }
+        }
+    }
+}

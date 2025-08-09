@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "awesome-tests-project"
+version = "0.1.0"
+description = ""
+authors = ["Menshikov Valeriy Sergeevich <vmenshikov@ozon.ru>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+restcodegen = "^1.1.1"
+pydantic-settings = "^2.10.1"
+pytest = "^8.4.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

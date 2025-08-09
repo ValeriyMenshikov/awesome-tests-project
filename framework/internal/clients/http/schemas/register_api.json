@@ -1,0 +1,435 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+        "title": "Register API",
+        "version": "0.1.0"
+    },
+    "servers": [
+        {
+            "url": "/register"
+        }
+    ],
+    "paths": {
+        "/user/register": {
+            "post": {
+                "tags": [
+                    "Account"
+                ],
+                "summary": "Регистрация пользователя",
+                "description": "Метод для регистрации пользователя,\n    после успешного выполнения на почтовый сервер будет отправлено письмо для подтверждения регистрации,\n    с помощью токена необходимо подтвердить регистрацию в методе activate",
+                "operationId": "register_user_register_post",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Registration"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/register_user_register_post_response_201"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/async-register": {
+            "post": {
+                "tags": [
+                    "Account"
+                ],
+                "summary": "Асинхронная регистрация пользователя",
+                "description": "Метод для асинхронной регистрации пользователя, при регистрации, отправляется сообщение в Kafka в топик email,\n    в случае успешного выполнения на почтовый сервер будет отправлено письмо для подтверждения регистрации,\n    с помощью токена необходимо подтвердить регистрацию в методе activate",
+                "operationId": "async_register_user_async_register_post",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Registration"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/async_register_user_async_register_post_response_201"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/user/activate": {
+            "put": {
+                "tags": [
+                    "Account"
+                ],
+                "summary": "Подтвердить регистрацию",
+                "description": "Метод для подтверждения регистрации пользователя с помощью токена из письма.",
+                "operationId": "activate_user_activate_put",
+                "parameters": [
+                    {
+                        "name": "token",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Token"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserEnvelope"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "HTTPValidationError": {
+                "properties": {
+                    "detail": {
+                        "items": {
+                            "$ref": "#/components/schemas/ValidationError"
+                        },
+                        "type": "array",
+                        "title": "Detail"
+                    }
+                },
+                "type": "object",
+                "title": "HTTPValidationError"
+            },
+            "Rating": {
+                "properties": {
+                    "enabled": {
+                        "anyOf": [
+                            {
+                                "type": "boolean"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Enabled",
+                        "description": "Rating participation flag"
+                    },
+                    "quality": {
+                        "anyOf": [
+                            {
+                                "type": "integer"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Quality",
+                        "description": "Quality rating"
+                    },
+                    "quantity": {
+                        "anyOf": [
+                            {
+                                "type": "integer"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Quantity",
+                        "description": "Quantity rating"
+                    }
+                },
+                "type": "object",
+                "title": "Rating"
+            },
+            "Registration": {
+                "properties": {
+                    "login": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Login",
+                        "description": "Login"
+                    },
+                    "email": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Email",
+                        "description": "Email"
+                    },
+                    "password": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Password",
+                        "description": "Password"
+                    }
+                },
+                "type": "object",
+                "title": "Registration"
+            },
+            "User": {
+                "properties": {
+                    "login": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Login",
+                        "description": "Login"
+                    },
+                    "roles": {
+                        "anyOf": [
+                            {
+                                "items": {
+                                    "$ref": "#/components/schemas/UserRole"
+                                },
+                                "type": "array"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Roles",
+                        "description": "Roles"
+                    },
+                    "mediumPictureUrl": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Mediumpictureurl",
+                        "description": "Profile picture URL M-size"
+                    },
+                    "smallPictureUrl": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Smallpictureurl",
+                        "description": "Profile picture URL S-size"
+                    },
+                    "status": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Status",
+                        "description": "User defined status"
+                    },
+                    "rating": {
+                        "anyOf": [
+                            {
+                                "$ref": "#/components/schemas/Rating"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ]
+                    },
+                    "online": {
+                        "anyOf": [
+                            {
+                                "type": "string",
+                                "format": "date-time"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Online",
+                        "description": "Last seen online moment"
+                    },
+                    "name": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Name",
+                        "description": "User real name"
+                    },
+                    "location": {
+                        "anyOf": [
+                            {
+                                "type": "string"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Location",
+                        "description": "User real location"
+                    },
+                    "registration": {
+                        "anyOf": [
+                            {
+                                "type": "string",
+                                "format": "date-time"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Registration",
+                        "description": "User registration moment"
+                    }
+                },
+                "type": "object",
+                "title": "User"
+            },
+            "UserEnvelope": {
+                "properties": {
+                    "resource": {
+                        "$ref": "#/components/schemas/User"
+                    },
+                    "metadata": {
+                        "type": "object",
+                        "title": "Metadata",
+                        "description": "Additional metadata"
+                    }
+                },
+                "type": "object",
+                "title": "UserEnvelope"
+            },
+            "UserRole": {
+                "type": "string",
+                "enum": [
+                    "Guest",
+                    "Player",
+                    "Administrator",
+                    "NannyModerator",
+                    "RegularModerator",
+                    "SeniorModerator"
+                ],
+                "title": "UserRole"
+            },
+            "ValidationError": {
+                "properties": {
+                    "loc": {
+                        "items": {
+                            "$ref": "#/components/schemas/ValidationError_loc_item"
+                        },
+                        "type": "array",
+                        "title": "Location"
+                    },
+                    "msg": {
+                        "type": "string",
+                        "title": "Message"
+                    },
+                    "type": {
+                        "type": "string",
+                        "title": "Error Type"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "loc",
+                    "msg",
+                    "type"
+                ],
+                "title": "ValidationError"
+            },
+            "register_user_register_post_response_201": {},
+            "async_register_user_async_register_post_response_201": {},
+            "ValidationError_loc_item": {
+                "anyOf": [
+                    {
+                        "type": "string"
+                    },
+                    {
+                        "type": "integer"
+                    }
+                ]
+            }
+        }
+    }
+}

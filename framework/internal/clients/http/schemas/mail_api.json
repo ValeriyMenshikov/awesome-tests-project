@@ -1,0 +1,552 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+        "title": "Mail API",
+        "version": "0.1.0"
+    },
+    "servers": [
+        {
+            "url": "/mail"
+        }
+    ],
+    "paths": {
+        "/mail/messages": {
+            "get": {
+                "tags": [
+                    "Mail"
+                ],
+                "summary": "Get Messages",
+                "operationId": "get_messages_mail_messages_get",
+                "parameters": [
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "maximum": 100,
+                            "minimum": 1,
+                            "description": "Количество необходимых записей",
+                            "default": 50,
+                            "title": "Limit"
+                        },
+                        "description": "Количество необходимых записей"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Messages"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Mail"
+                ],
+                "summary": "Delete Messages",
+                "description": "Удалить все сообщения",
+                "operationId": "delete_messages_mail_messages_delete",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/delete_messages_mail_messages_delete_response_200"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/mail/search": {
+            "get": {
+                "tags": [
+                    "Mail"
+                ],
+                "summary": "Search",
+                "operationId": "search_mail_search_get",
+                "parameters": [
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "maximum": 100,
+                            "minimum": 1,
+                            "description": "Количество необходимых записей",
+                            "default": 50,
+                            "title": "Limit"
+                        },
+                        "description": "Количество необходимых записей"
+                    },
+                    {
+                        "name": "kind",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "description": "Тип поиска",
+                            "default": "containing",
+                            "title": "Kind"
+                        },
+                        "description": "Тип поиска"
+                    },
+                    {
+                        "name": "query",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "description": "Текст поиска",
+                            "title": "Query"
+                        },
+                        "description": "Текст поиска"
+                    },
+                    {
+                        "name": "start",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "minimum": 0,
+                            "description": "Начальная позиция поиска",
+                            "default": 0,
+                            "title": "Start"
+                        },
+                        "description": "Начальная позиция поиска"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Messages"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/mail/message/{message_id}": {
+            "delete": {
+                "tags": [
+                    "Mail"
+                ],
+                "summary": "Delete Message",
+                "description": "Удалить сообщение",
+                "operationId": "delete_message_mail_message__message_id__delete",
+                "parameters": [
+                    {
+                        "name": "message_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Message Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/delete_message_mail_message__message_id__delete_response_200"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "get": {
+                "tags": [
+                    "Mail"
+                ],
+                "summary": "Get Message",
+                "description": "Получить сообщение",
+                "operationId": "get_message_mail_message__message_id__get",
+                "parameters": [
+                    {
+                        "name": "message_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Message Id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Item"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Content": {
+                "properties": {
+                    "Headers": {
+                        "$ref": "#/components/schemas/Headers"
+                    },
+                    "Body": {
+                        "type": "string",
+                        "title": "Body"
+                    },
+                    "Size": {
+                        "type": "integer",
+                        "title": "Size"
+                    },
+                    "MIME": {
+                        "title": "Mime"
+                    }
+                },
+                "type": "object",
+                "title": "Content"
+            },
+            "From": {
+                "properties": {
+                    "Relays": {
+                        "title": "Relays"
+                    },
+                    "Mailbox": {
+                        "type": "string",
+                        "title": "Mailbox"
+                    },
+                    "Domain": {
+                        "type": "string",
+                        "title": "Domain"
+                    },
+                    "Params": {
+                        "type": "string",
+                        "title": "Params"
+                    }
+                },
+                "type": "object",
+                "title": "From"
+            },
+            "HTTPValidationError": {
+                "properties": {
+                    "detail": {
+                        "items": {
+                            "$ref": "#/components/schemas/ValidationError"
+                        },
+                        "type": "array",
+                        "title": "Detail"
+                    }
+                },
+                "type": "object",
+                "title": "HTTPValidationError"
+            },
+            "Headers": {
+                "properties": {
+                    "Content-Type": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array",
+                        "title": "Content-Type"
+                    },
+                    "Date": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array",
+                        "title": "Date"
+                    },
+                    "From": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array",
+                        "title": "From"
+                    },
+                    "MIME-Version": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array",
+                        "title": "Mime-Version"
+                    },
+                    "Message-Id": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array",
+                        "title": "Message-Id"
+                    },
+                    "Received": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array",
+                        "title": "Received"
+                    },
+                    "Reply-To": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array",
+                        "title": "Reply-To"
+                    },
+                    "Return-Path": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array",
+                        "title": "Return-Path"
+                    },
+                    "Subject": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array",
+                        "title": "Subject"
+                    },
+                    "To": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array",
+                        "title": "To"
+                    }
+                },
+                "type": "object",
+                "title": "Headers"
+            },
+            "Item": {
+                "properties": {
+                    "ID": {
+                        "type": "string",
+                        "title": "Id"
+                    },
+                    "From": {
+                        "$ref": "#/components/schemas/From"
+                    },
+                    "To": {
+                        "items": {
+                            "$ref": "#/components/schemas/ToItem"
+                        },
+                        "type": "array",
+                        "title": "To"
+                    },
+                    "Content": {
+                        "$ref": "#/components/schemas/Content"
+                    },
+                    "Created": {
+                        "type": "string",
+                        "title": "Created"
+                    },
+                    "MIME": {
+                        "title": "Mime"
+                    },
+                    "Raw": {
+                        "$ref": "#/components/schemas/Raw"
+                    }
+                },
+                "type": "object",
+                "title": "Item"
+            },
+            "Messages": {
+                "properties": {
+                    "total": {
+                        "anyOf": [
+                            {
+                                "type": "integer"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Total"
+                    },
+                    "count": {
+                        "anyOf": [
+                            {
+                                "type": "integer"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Count"
+                    },
+                    "start": {
+                        "anyOf": [
+                            {
+                                "type": "integer"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Start"
+                    },
+                    "items": {
+                        "anyOf": [
+                            {
+                                "items": {
+                                    "$ref": "#/components/schemas/Item"
+                                },
+                                "type": "array"
+                            },
+                            {
+                                "type": "null"
+                            }
+                        ],
+                        "title": "Items"
+                    }
+                },
+                "type": "object",
+                "title": "Messages"
+            },
+            "Raw": {
+                "properties": {
+                    "From": {
+                        "type": "string",
+                        "title": "From"
+                    },
+                    "To": {
+                        "items": {
+                            "type": "string"
+                        },
+                        "type": "array",
+                        "title": "To"
+                    },
+                    "Data": {
+                        "type": "string",
+                        "title": "Data"
+                    },
+                    "Helo": {
+                        "type": "string",
+                        "title": "Helo"
+                    }
+                },
+                "type": "object",
+                "title": "Raw"
+            },
+            "ToItem": {
+                "properties": {
+                    "Relays": {
+                        "title": "Relays"
+                    },
+                    "Mailbox": {
+                        "type": "string",
+                        "title": "Mailbox"
+                    },
+                    "Domain": {
+                        "type": "string",
+                        "title": "Domain"
+                    },
+                    "Params": {
+                        "type": "string",
+                        "title": "Params"
+                    }
+                },
+                "type": "object",
+                "title": "ToItem"
+            },
+            "ValidationError": {
+                "properties": {
+                    "loc": {
+                        "items": {
+                            "$ref": "#/components/schemas/ValidationError_loc_item"
+                        },
+                        "type": "array",
+                        "title": "Location"
+                    },
+                    "msg": {
+                        "type": "string",
+                        "title": "Message"
+                    },
+                    "type": {
+                        "type": "string",
+                        "title": "Error Type"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "loc",
+                    "msg",
+                    "type"
+                ],
+                "title": "ValidationError"
+            },
+            "delete_messages_mail_messages_delete_response_200": {},
+            "delete_message_mail_message__message_id__delete_response_200": {},
+            "ValidationError_loc_item": {
+                "anyOf": [
+                    {
+                        "type": "string"
+                    },
+                    {
+                        "type": "integer"
+                    }
+                ]
+            }
+        }
+    }
+}
