@@ -17,4 +17,5 @@ pytest_plugins = [
     "framework.fixtures.http.services.users",
     "framework.fixtures.account",
     "framework.fixtures.data.user",
+    "framework.fixtures.base",
 ]

@@ -6,9 +6,8 @@ from framework.helpers.service_wrappers.mail.mail import MailApiClient
 
 
 @pytest.fixture(scope="session")
-def mail_service_api_client() -> Client:
-    base_settings = Settings()
-    configuration = Configuration(base_url=base_settings.mail_api_url)
+def mail_service_api_client(settings: Settings) -> Client:
+    configuration = Configuration(base_url=settings.mail_api_url)
     return Client(configuration)
 
 

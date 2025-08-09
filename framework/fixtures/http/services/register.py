@@ -6,9 +6,8 @@ from framework.helpers.service_wrappers.register.register import RegisterApiClie
 
 
 @pytest.fixture(scope="session")
-def users_service_api_client() -> Client:
-    base_settings = Settings()
-    configuration = Configuration(base_url=base_settings.register_api_url)
+def users_service_api_client(settings: Settings) -> Client:
+    configuration = Configuration(base_url=settings.register_api_url)
     return Client(configuration)
 
 

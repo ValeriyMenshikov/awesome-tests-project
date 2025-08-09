@@ -12,7 +12,7 @@ class AuthApiClient(AuthApi):
     ) -> UserEnvelope:
         return self.post_auth_auth(
             login_credentials=LoginCredentials(
-                login=login, password=password, remember_me=remember_me
+                login=login, password=password, rememberMe=remember_me
             )
         )
 

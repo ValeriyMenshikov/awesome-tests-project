@@ -6,9 +6,8 @@ from framework.helpers.service_wrappers.account.account import AccountApiClient
 
 
 @pytest.fixture(scope="session")
-def account_service_api_client() -> Client:
-    base_settings = Settings()
-    configuration = Configuration(base_url=base_settings.account_api_url)
+def account_service_api_client(settings: Settings) -> Client:
+    configuration = Configuration(base_url=settings.account_api_url)
     return Client(configuration)
 
 

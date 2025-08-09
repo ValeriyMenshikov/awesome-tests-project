@@ -6,9 +6,8 @@ from framework.helpers.service_wrappers.auth.auth import AuthApiClient
 
 
 @pytest.fixture(scope="session")
-def auth_service_api_client() -> Client:
-    base_settings = Settings()
-    configuration = Configuration(base_url=base_settings.auth_api_url)
+def auth_service_api_client(settings: Settings) -> Client:
+    configuration = Configuration(base_url=settings.auth_api_url)
     return Client(configuration)
 
 
